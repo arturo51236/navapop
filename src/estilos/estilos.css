@@ -1,0 +1,169 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: block;
+}
+
+header {
+    display: flex;
+    flex-wrap: wrap;
+    height: 8vh;
+    width: 100%;
+    background-color: burlywood;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    height: 85vh;
+}
+
+nav {
+    text-align: center;
+    display: block;
+    width: 18%;
+    background-color: aqua;
+}
+
+section {
+    display: block;
+    width: 82%;
+    background-color: brown;
+}
+
+footer {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 7vh;
+    background-color: green;
+}
+
+.login {
+    display: block;
+    width: 100%;
+    height: 30%;
+    padding-top: 5%;
+}
+
+.login > * {
+    border-radius: 10px;
+    width: 80%;
+    height: 15%;
+    margin: 10px;
+}
+
+.nav-items, .error {
+    display: table;
+    height: 8%;
+    width: 100%;
+}
+
+.nav-items > h4 {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.LogInfo {
+    margin: 5px;
+    display: flex;
+    height: 10%;
+}
+
+.imgL {
+    display: block;
+    float: left;
+    width: 23%;
+    height: 100%;
+}
+
+.imgL > img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.emailL {
+    display: block;
+    float: right;
+    width: 77%;
+    height: 100%;
+}
+
+.emailL > p {
+    width: 100%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    word-wrap: break-word;
+}
+
+.logoutL {
+    display: block;
+    width: 100%;
+    height: 8%;
+}
+
+.logoutL > a {
+    position: relative;
+    top: 35%;
+}
+
+.anuncios-cont {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: baseline start;
+    width: 100%;
+    padding-left: 4%;
+}
+
+.anuncio {
+    text-align: center;
+    width: 30%;
+    margin: 15px;
+    border-radius: 25px;
+    background-color: chartreuse;
+}
+
+.n-p-A {
+    display: flex;
+    width: 100%;
+    border-radius: 25px;
+    margin: 8px;
+}
+
+.fotoA {
+    width: 25vh;
+    height: 250px;
+    object-fit: cover;
+    object-position: center center;
+    margin-top: 15px;
+}
+
+.nombreA {
+    width: 75%;
+}
+
+.precioA {
+    width: 25%;
+}
+
+.loseuros {
+    position: relative;
+}
+
+.loseuros > input {
+    padding-left: 15px;
+}
+
+.loseuros:after {
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    content: '€';
+}
