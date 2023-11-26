@@ -8,10 +8,34 @@ class DAOFoto {
     }
 
     /**
-     * Devuelve una de las fotos del anuncio que se le pasa cómo parámetro para usarla cómo main foto
-     * @return string|bool Devuelve el nombre de una de las fotos que se insertó de un anuncio en concreto o false en caso de error
+     * Devuelve todas las fotos del anuncio que se le pasa cómo parámetro
+     * @return array|null Devuelve las fotos de un anuncio en concreto o null en caso de que el anuncio no tenga fotos
      */
-    function selectMainFotoById(int $id):string|bool {
+    function selectAllById(int $id):array|null {
+        if (!$stmt = $this->conn->prepare("SELECT * FROM fotos WHERE id = ?")) {
+            die("Error al preparar la consulta insert: " . $this->conn->error );
+        }
+
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows >= 1) {
+            $array_fotos = array();
+            while ($foto = $result->fetch_object(Foto::class)) {
+                $array_fotos[] = $foto;
+            }
+            return $array_fotos;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Devuelve una de las fotos del anuncio que se le pasa cómo parámetro para usarla cómo main foto
+     * @return string|null Devuelve el nombre de una de las fotos que se insertó de un anuncio en concreto o null en caso de que no se pueda devolver una foto
+     */
+    function selectMainById(int $id):string|null {
         if (!$stmt = $this->conn->prepare("SELECT foto FROM fotos WHERE id = ? ORDER BY foto LIMIT 1")) {
             die("Error al preparar la consulta insert: " . $this->conn->error );
         }
@@ -23,7 +47,7 @@ class DAOFoto {
         if ($result->num_rows == 1){
             return $result->fetch_column();
         } else {
-            return false;
+            return null;
         }
     }
 

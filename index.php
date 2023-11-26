@@ -11,14 +11,13 @@ require_once 'utilidades/conninfo.php';
 
 $connDB = new dbconn(MYSQL_USER, MYSQL_PASS, MYSQL_HOST, MYSQL_DB);
 $conn = $connDB->getConnexion();
+$DAOUsuarios = new DAOUsuario($conn);
 
 $error = '';
-
 //Si existe la cookie y no ha iniciado sesión, le iniciamos sesión de forma automática
 if (!isset($_SESSION['email']) && isset($_COOKIE['sid'])) {
     //Nos conectamos para obtener el id y la foto del usuario
     if ($usuario = $DAOUsuarios->selectBySid($_COOKIE['sid'])) {
-        $DAOUsuarios = new DAOUsuario($conn);
         //Inicio sesión
         $_SESSION['email'] = $usuario->getEmail();
         $_SESSION['id'] = $usuario->getId();
@@ -110,7 +109,7 @@ function mostrarError($error) {
             <div class="anuncios-cont">
                 <?php foreach ($anuncios as $anuncio): ?>
                     <?php
-                        $mainfoto = $DAOFotos->selectMainFotoById($anuncio->getId());
+                        $mainfoto = $DAOFotos->selectMainById($anuncio->getId());
                     ?>
                     <div class="anuncio">
                         <div>

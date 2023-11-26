@@ -10,11 +10,11 @@ class DAOAnuncio
     }
 
     /**
-     * Obtiene todos los anuncios de la tabla anuncios
+     * Obtiene todos los anuncios de la tabla anuncios ordenados por fecha de creación de manera descendente
      * @return array|null Devuelve un array de anuncios o null si no existe ningún anuncio en la base de datos
      */
     public function selectAll():array|null {
-        if (!$stmt = $this->conn->prepare("SELECT * FROM anuncios")) {
+        if (!$stmt = $this->conn->prepare("SELECT * FROM anuncios ORDER BY fechacreacion DESC")) {
             echo "Error en la SQL: " . $this->conn->error;
         }
 
@@ -51,6 +51,26 @@ class DAOAnuncio
                 $array_anuncios_id[] = $anuncio;
             }
             return $array_anuncios_id;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Obtiene un anuncio concreto de la tabla anuncios
+     * @return array|null Devuelve un anuncio o null si no existe un anuncio con ese id
+     */
+    public function selectById(int $id):Anuncio|null {
+        if (!$stmt = $this->conn->prepare("SELECT * FROM anuncios WHERE id = ?")) {
+            echo "Error en la SQL: " . $this->conn->error;
+        }
+
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows == 1) {
+            return $result->fetch_object(Anuncio::class);
         } else {
             return null;
         }

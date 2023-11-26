@@ -9,26 +9,29 @@ class DAOUsuario {
 
     /**
      * Obtiene todos los usuarios de la tabla usuarios
-     * @return array Devuelve un array de usuarios
+     * @return array|null Devuelve un array con todos los usuarios o null en caso de error
      */
-    public function selectAll():array {
+    public function selectAll():array|null {
         if (!$stmt = $this->conn->prepare("SELECT * FROM usuarios")) {
             echo "Error en la SQL: " . $this->conn->error;
         }
 
         $stmt->execute();
         $result = $stmt->get_result();
-        $array_usuarios = array();
 
-        while ($usuario = $result->fetch_object(Usuario::class)) {
-            $array_usuarios[] = $usuario;
+        if ($result->num_rows >= 1) {
+            $array_usuarios = array();
+            while ($usuario = $result->fetch_object(Usuario::class)) {
+                $array_usuarios[] = $usuario;
+            }
+            return $array_usuarios;
+        } else {
+            return null;
         }
-
-        return $array_usuarios;
     }
 
     /**
-     * Obtiene un usuario de la BD en función del email
+     * Obtiene un usuario de la tabla usuarios en función del email
      * @return Usuario|null Devuelve un Objeto de la clase Usuario o null si no existe
      */
     public function selectByEmail($email):Usuario|null {
@@ -40,7 +43,28 @@ class DAOUsuario {
         $stmt->execute();
         $result = $stmt->get_result();
 
-        if ($result->num_rows >= 1) {
+        if ($result->num_rows == 1) {
+            $usuario = $result->fetch_object(Usuario::class);
+            return $usuario;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Obtiene un usuario de la base de datos en función del id
+     * @return Usuario|null Devuelve un objeto de la clase Usuario o null si no existe
+     */
+    public function selectById($id):Usuario|null {
+        if (!$stmt = $this->conn->prepare("SELECT * FROM usuarios WHERE id = ?")) {
+            echo "Error en la SQL: " . $this->conn->error;
+        }
+
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows == 1) {
             $usuario = $result->fetch_object(Usuario::class);
             return $usuario;
         } else {
@@ -61,7 +85,7 @@ class DAOUsuario {
         $stmt->execute();
         $result = $stmt->get_result();
 
-        if ($result->num_rows >= 1) {
+        if ($result->num_rows == 1) {
             $usuario = $result->fetch_object(Usuario::class);
             return $usuario;
         } else {
