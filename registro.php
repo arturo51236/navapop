@@ -4,6 +4,7 @@ require_once 'dao/DAOUsuario.php';
 require_once 'modelo/Usuario.php';
 require_once 'utilidades/dbconn.php';
 require_once 'utilidades/conninfo.php';
+require_once 'utilidades/error.php';
 
 $error = '';
 $foto = '';
@@ -26,8 +27,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error = "Es obligatorio rellenar todos los campos";
     }
 
-    if (strlen($passwd <= 4)) {
+    if (strlen($passwd) <= 4) {
         $error = "La contraseña debe de tener más de 4 caracteres";
+    }
+
+    if (strlen($telefono) != 9) {
+        $error = "El teléfono debe ser de 9 caracteres";
     }
 
     // Compruebo que no haya un usuario registrado con el mismo email
@@ -36,8 +41,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         // Comprobamos que la extensión del archivo introducido es válida
         $extension = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
-        if ($extension != 'jpg' && $extension != 'jpeg' && $extension != 'webp' && $extension != 'png') {
-            $error = "La foto no tiene un formato admitido, debe ser jpg, jpeg, png o webp";
+        if ($extension != 'jpg' && $extension != 'jpeg' && $extension != 'png') {
+            $error = "La foto no tiene un formato admitido, debe ser jpg, jpeg o png";
+
+            if ($_FILES['foto']['error'] == UPLOAD_ERR_NO_FILE) {
+                $error = "No has introducido ninguna imagen de perfil";
+            }
         } else {
             // Copiamos la foto al disco
             // Calculamos un hash para el nombre del archivo
@@ -53,10 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     die("Error al copiar la foto a la carpeta fotosUsuarios");
                 }
             }
-        }
-
-        if (strlen($telefono) != 9) {
-            $error = "El teléfono debe ser de 9 caracteres";
         }
 
         if ($error == '') {
@@ -81,31 +86,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
     <link rel="stylesheet" href="./src/estilos/estilos.css">
 </head>
-
 <body>
-    <main>
-        <?= $error ?>
-        <form action="registro.php" method="post" enctype="multipart/form-data">
-            <label>Nombre: </label><input type="text" name="nombre" placeholder="Introduce tu nombre" required><br>
-            <label>Email: </label><input type="email" name="email" placeholder="Introduce tu email" required><br>
-            <label>Contraseña: </label><input type="password" name="passwd" placeholder="Introduce tu contraseña" required><br>
-            <label>Teléfono: </label><input type="number" name="telefono" placeholder="Introduce tu teléfono" required><br>
-            <label>Población: </label><input type="text" name="poblacion" placeholder="Introduce tu población" required><br>
-            <label>Foto de perfil: </label><input type="file" name="foto" accept="image/jpeg, image/webp, image/png"><br>
-            <input type="submit" value="Confirmar registro">
-            <a href="index.php">Volver atrás</a>
-        </form>
+    <header>
+        <div class="title">
+            <h1>NAVAPOP</h1>
+        </div>
+        <div class="search">
+            <form method="get" action="index.php?busqueda=">
+                <input type="search" name="busqueda" placeholder="Búsqueda de anuncio..." >
+                <button>Buscar</button>
+            </form>
+        </div>
+    </header>
+    <main class="main-registro-nuevoanuncio">
+        <?php mostrarError($error); ?>
+        <div class="registro">
+            <form action="registro.php" method="post" enctype="multipart/form-data">
+                <label>Nombre: </label><br><input type="text" name="nombre" placeholder="Introduce tu nombre" required value="<?= isset($nombre) ? $nombre : ''?>"><br>
+                <label>Email: </label><br><input type="email" name="email" placeholder="Introduce tu email" required value="<?= isset($email) ? $email : ''?>"><br>
+                <label>Contraseña: </label><br><input type="password" name="passwd" placeholder="Introduce tu contraseña" required value="<?= isset($passwd) ? $passwd : ''?>"><br>
+                <label>Teléfono: </label><br><input type="number" name="telefono" placeholder="Introduce tu teléfono" required value="<?= isset($telefono) ? $telefono : ''?>"><br>
+                <label>Población: </label><br><input type="text" name="poblacion" placeholder="Introduce tu población" required value="<?= isset($poblacion) ? $poblacion : ''?>"><br>
+                <label>Foto de perfil: </label><br><input type="file" name="foto" accept="image/jpeg, image/png"><br>
+                <input class="but-registro" type="submit" value="Confirmar registro">
+            </form>
+            <div>
+                <a href="index.php">Volver atrás</a>
+            </div>
+        </div>
     </main>
+    <footer>
+        <p>Copyright &#169 Navapop 2023</p>
+    </footer>
 </body>
-
 </html>

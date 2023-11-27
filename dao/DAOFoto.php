@@ -11,7 +11,7 @@ class DAOFoto {
      * Devuelve todas las fotos del anuncio que se le pasa cómo parámetro
      * @return array|null Devuelve las fotos de un anuncio en concreto o null en caso de que el anuncio no tenga fotos
      */
-    function selectAllById(int $id):array|null {
+    public function selectAllById(int $id):array|null {
         if (!$stmt = $this->conn->prepare("SELECT * FROM fotos WHERE id = ?")) {
             die("Error al preparar la consulta insert: " . $this->conn->error );
         }
@@ -35,7 +35,7 @@ class DAOFoto {
      * Devuelve una de las fotos del anuncio que se le pasa cómo parámetro para usarla cómo main foto
      * @return string|null Devuelve el nombre de una de las fotos que se insertó de un anuncio en concreto o null en caso de que no se pueda devolver una foto
      */
-    function selectMainById(int $id):string|null {
+    public function selectMainById(int $id):string|null {
         if (!$stmt = $this->conn->prepare("SELECT foto FROM fotos WHERE id = ? ORDER BY foto LIMIT 1")) {
             die("Error al preparar la consulta insert: " . $this->conn->error );
         }
@@ -44,7 +44,7 @@ class DAOFoto {
         $stmt->execute();
         $result = $stmt->get_result();
 
-        if ($result->num_rows == 1){
+        if ($result->num_rows == 1) {
             return $result->fetch_column();
         } else {
             return null;
@@ -55,7 +55,7 @@ class DAOFoto {
      * Inserta en la base de datos las fotos de un anuncio teniendo en cuenta su id
      * @return bool Devuelve true si se ha ejecutado correctamente y false en caso contrario
      */
-    function insert(int $id, array $fotos):bool {
+    public function insert(int $id, array $fotos):bool {
         if (!$stmt = $this->conn->prepare("INSERT INTO fotos (id, foto) VALUES (?,?)")) {
             die("Error al preparar la consulta insert: " . $this->conn->error );
         }
@@ -65,7 +65,25 @@ class DAOFoto {
             $stmt->execute();
         }
 
-        if ($this->conn->affected_rows == count($fotos)){
+        if ($this->conn->affected_rows == count($fotos)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Elimina de la base de datos las fotos de un anuncio teniendo en cuenta su id
+     * @return bool Devuelve true si se ha ejecutado correctamente y false en caso contrario
+     */
+    public function delete(int $id):bool {
+        if (!$stmt = $this->conn->prepare("DELETE FROM fotos where id = ?")) {
+            die("Error al preparar la consulta insert: " . $this->conn->error );
+        }
+
+        $stmt->bind_param('i', $id);
+
+        if ($stmt->execute()) {
             return true;
         } else {
             return false;

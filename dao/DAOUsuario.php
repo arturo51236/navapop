@@ -52,6 +52,24 @@ class DAOUsuario {
     }
 
     /**
+     * Elimina un usuario y todo su contenido de la base de datos en función del email
+     * @return bool true en caso de que se haya eliminado correctamente o false en caso contrario
+     */
+    public function deleteByEmail($email):bool {
+        if (!$stmt = $this->conn->prepare("DELETE FROM usuarios WHERE email = ?")) {
+            echo "Error en la SQL: " . $this->conn->error;
+        }
+
+        $stmt->bind_param('s', $email);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Obtiene un usuario de la base de datos en función del id
      * @return Usuario|null Devuelve un objeto de la clase Usuario o null si no existe
      */
@@ -116,7 +134,7 @@ class DAOUsuario {
      * Inserta en la base de datos el usuario que recibe como parámetro
      * @return bool Devuelve true si se ha ejecutado correctamente o false en caso de error
      */
-    function insert(Usuario $usuario):bool {
+    public function insert(Usuario $usuario):bool {
         if (!$stmt = $this->conn->prepare("INSERT INTO usuarios (id, nombre, email, passwd, telefono, poblacion, foto, sid) VALUES (?,?,?,?,?,?,?,?)")) {
             die("Error al preparar la consulta insert: " . $this->conn->error );
         }

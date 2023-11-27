@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -7,6 +9,10 @@
 body {
     min-height: 100vh;
     display: block;
+    background-color: #18181b;
+    color: #daeef3;
+    font-family: 'Bubblegum Sans', sans-serif;
+    font-size: 1.5rem;
 }
 
 header {
@@ -14,10 +20,11 @@ header {
     flex-wrap: wrap;
     height: 8vh;
     width: 100%;
-    background-color: burlywood;
+    background-color: #09090b;
+    border-bottom: 2px solid #89c6d7;
 }
 
-main {
+main, .main-registro-nuevoanuncio {
     display: flex;
     flex-wrap: wrap;
     height: 85vh;
@@ -27,44 +34,151 @@ nav {
     text-align: center;
     display: block;
     width: 18%;
-    background-color: aqua;
+    background-color: #09090b;
+    border-right: 2px solid #89c6d7;
 }
 
 section {
     display: block;
     width: 82%;
-    background-color: brown;
 }
 
 footer {
     display: flex;
     flex-wrap: wrap;
+    position: absolute;
     width: 100%;
     height: 7vh;
-    background-color: green;
+    background-color: #09090b;
+    border-top: 2px solid #89c6d7;
 }
 
-.login {
+footer > p {
+    padding-top: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: #daeef3;
+}
+
+.error {
+    position: relative;
+    margin: auto;
+    text-align: center;
+    background-color: rgb(255, 255, 255, 0.6);
+    border: 1px solid #daeef3;
+    width: 24%;
+    border-radius: 15px;
+    margin-top: 30px;
+    box-shadow: 6px 6px 6px 3px rgba(138, 198, 214, 0.1);
+}
+
+.error > p {
+    color: red; 
+    margin: 10px;
+}
+
+.title {
+    display: flex;
+    position: relative;
+    height: 100%;
+    padding-left: 4%;
+}
+
+.title > h1 {
+    display: block;
+    height: 100%;
+    transform: translateY(20%);
+}
+
+.search {
+    display: block;
+    height: 100%;
+    width: 35%;
+    margin-left: auto; 
+    margin-right: 0;
+}
+
+.search > form {
+    height: 100%;
+}
+
+.search > form > input {
+    height: 60%;
+    width: 70%;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    box-shadow: 6px 6px 6px 3px rgba(138, 198, 214, 0.1);
+    transform: translateY(30%);
+}
+
+.search > form > button, .but-registro, .but-anuncios > button {
+    height: 60%;
+    width: 15%;
+    border-radius: 10px;
+    transform: translateY(35%);
+    color: #daeef3;
+    background-color: #162a36;
+    box-shadow: 6px 6px 6px 3px rgba(138, 198, 214, 0.1);
+    font-size: 1.4rem;
+    margin-left: 20px;
+}
+
+.search > form > button:hover {
+    background-image: linear-gradient(to right, #b9dee8, #59a9c2);
+    color: #162a36;
+}
+
+.but-registro, .but-anuncios > button {
+    margin-left: 0;
+    transform: translateY(-35%);
+    background-image: linear-gradient(to right, #b9dee8, #59a9c2);
+    color: #162a36;
+}
+
+.but-anuncios > button {
+    transform: translateY(0%);
+}
+
+.login-div {
     display: block;
     width: 100%;
-    height: 30%;
+    height: 40%;
     padding-top: 5%;
 }
 
 .login > * {
     border-radius: 10px;
     width: 80%;
-    height: 15%;
+    height: 35px;
     margin: 10px;
 }
 
-.nav-items, .error {
+.nav-items, .logoutL, .deleteL {
     display: table;
     height: 8%;
     width: 100%;
+    background-color: #162a36;
+    border-bottom: 1px solid #89c6d7;
+    box-shadow: 6px 6px 6px 3px rgba(138, 198, 214, 0.1);
 }
 
-.nav-items > h4 {
+.login-text {
+    display: table;
+    height: 20%;
+    width: 100%;
+    padding-top: 10px;
+}
+
+.nav-items:hover, .logoutL:hover, .deleteL:hover {
+    background-image: linear-gradient(to right, #b9dee8, #59a9c2);
+    color: #162a36;
+}
+
+.nav-items > h4, .deleteL > p, .login > h4, .logoutL > p {
     display: table-cell;
     vertical-align: middle;
 }
@@ -86,6 +200,7 @@ footer {
     width: 100%;
     height: 100%;
     border-radius: 50%;
+    object-fit: contain;
 }
 
 .emailL {
@@ -103,15 +218,11 @@ footer {
     word-wrap: break-word;
 }
 
-.logoutL {
-    display: block;
-    width: 100%;
-    height: 8%;
-}
-
-.logoutL > a {
-    position: relative;
-    top: 35%;
+.anuncios-div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: baseline start;
+    height: 85%;
 }
 
 .anuncios-cont {
@@ -122,12 +233,30 @@ footer {
     padding-left: 4%;
 }
 
-.anuncio {
+.anuncio-check {
+    display: block;
+    background-color: #162a36;
+    border: 1px solid #89c6d7;
+    box-shadow: 6px 6px 6px 3px rgba(138, 198, 214, 0.1);
+    border-radius: 25px;
+    width: 60%;
+    height: 80%;
+    margin: auto;
+}
+
+.anuncio, .registro {
     text-align: center;
     width: 30%;
     margin: 15px;
     border-radius: 25px;
-    background-color: chartreuse;
+    background-color: #162a36;
+    border: 1px solid #89c6d7;
+    box-shadow: 6px 6px 6px 3px rgba(138, 198, 214, 0.1);
+    transition: all 0.4s ease-in-out;
+}
+
+.anuncio:hover {
+    transform: scale(0.93);
 }
 
 .n-p-A, .n-t-p-f-U {
@@ -143,6 +272,7 @@ footer {
     object-fit: cover;
     object-position: center center;
     margin-top: 15px;
+    border-radius: 15px;
 }
 
 .fotoA-M {
@@ -156,6 +286,7 @@ footer {
 
 .nombreA {
     width: 75%;
+
 }
 
 .precioA {
@@ -177,21 +308,46 @@ footer {
     content: '€';
 }
 
-.nombreU {
-
-}
-
-.telefonoU {
-    
-}
-
-.poblacion-U {
-    
-}
-
 .foto-U {
     border-radius: 50%;
     width: 80px;
     height: 80px;
     border: 2px solid white;
+}
+
+.registro {
+    display: block;
+    width: 25%;
+    height: 70%;
+    margin: auto;
+    transform: translateY(-10%);
+}
+
+.registro > form {
+    padding: 20px;
+}
+
+.registro > form > input {
+    width: 80%;
+    height: 35px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.main-registro-nuevoanuncio {
+    flex-direction: column;
+}
+
+.fotoA-main {
+    width: 400px;
+    height: 300px;
+    margin: auto;
+}
+
+.fotoA-notmain {
+    display: flex;
+    width: 25%;
+    display: block;
+    margin-left: auto; 
+    margin-right: 0;
 }

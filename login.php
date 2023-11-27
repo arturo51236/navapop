@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['id'] = $usuario->getId();
 
             // Creamos la cookie para que nos recuerde 1 semana
-            setcookie('sid', $usuario->getSid(), time()+24*60*60,'/');
+            setcookie('sid', $usuario->getSid(), time()+24*60*60, '/');
             // Redirigimos a index.php
             header('location: index.php');
             die();
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Si el email o password son incorrectos, redirigir a index.php
-    $_SESSION['error']="Email o password incorrectos";
+    $_SESSION['error'] = "Email o password incorrectos";
     header('location: index.php');
 }
 ?>

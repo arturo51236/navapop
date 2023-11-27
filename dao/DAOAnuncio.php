@@ -77,6 +77,50 @@ class DAOAnuncio
     }
 
     /**
+     * Elimina un anuncio y todo su contenido de la base de datos en función del id
+     * @return bool true en caso de que se haya eliminado correctamente o false en caso contrario
+     */
+    public function deleteById($id):bool {
+        if (!$stmt = $this->conn->prepare("DELETE FROM anuncios WHERE id = ?")) {
+            echo "Error en la SQL: " . $this->conn->error;
+        }
+
+        $stmt->bind_param('i', $id);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Obtiene los anuncios que compartan la cadena de texto que le llega cómo parámetro
+     * @return array|null Devuelve un array anuncio o null si no existe ningún anuncio con esa cadena
+     */
+    public function filter($nombre):array|null {
+        if (!$stmt = $this->conn->prepare("SELECT * FROM anuncios WHERE nombre LIKE ?")) {
+            die ("Error al preparar la consulta insert: " . $this->conn->error);
+        }
+
+        $anyWordAny= '%' . $nombre . '%';
+        $stmt->bind_param('s', $anyWordAny);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        while ($anuncio = $result->fetch_object(Anuncio::class)) {
+            $array_anuncios = array();
+            $array_anuncios[] = $anuncio;
+        }
+
+        if (empty($array_anuncios)) {
+            return null;
+        } else {
+            return $array_anuncios;
+        }
+    }
+
+    /**
      * Obtiene el último id de la tabla de anuncios y le suma 1
      * @return int Devuelve un número entero que servirá cómo id a un nuevo anuncio
      */
@@ -99,7 +143,7 @@ class DAOAnuncio
      * Inserta en la base de datos el anuncio que recibe cómo parámetro
      * @return bool Devuelve true si se ha ejecutado correctamente o false en caso de error
      */
-    function insert(Anuncio $anuncio):bool {
+    public function insert(Anuncio $anuncio):bool {
         if (!$stmt = $this->conn->prepare("INSERT INTO anuncios (id, nombre, descripcion, precio, fechacreacion, finalizado, idusuario) VALUES (?,?,?,?,?,?,?)")) {
             die("Error al preparar la consulta insert: " . $this->conn->error);
         }
@@ -112,6 +156,28 @@ class DAOAnuncio
         $finalizado = $anuncio->getFinalizado();
         $idusuario = $anuncio->getIdusuario();
         $stmt->bind_param('issdsii', $id, $nombre, $descripcion, $precio, $fechacreacion, $finalizado, $idusuario);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Modifica en la base de datos el anuncio que recibe cómo parámetro
+     * @return bool Devuelve true si se ha ejecutado correctamente o false en caso de error
+     */
+    public function modify(Anuncio $anuncio, int $id):bool {
+        if (!$stmt = $this->conn->prepare("UPDATE anuncios SET nombre = ?, descripcion = ?, precio = ?, fechacreacion = ? WHERE id = ?")) {
+            die("Error al preparar la consulta insert: " . $this->conn->error);
+        }
+
+        $nombre = $anuncio->getNombre();
+        $descripcion = $anuncio->getDescripcion();
+        $precio = $anuncio->getPrecio();
+        $fechacreacion = $anuncio->getFechacreacion();
+        $stmt->bind_param('ssdsi', $nombre, $descripcion, $precio, $fechacreacion, $id);
 
         if ($stmt->execute()) {
             return true;

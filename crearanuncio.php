@@ -6,6 +6,7 @@ require_once 'dao/DAOFoto.php';
 require_once 'modelo/Anuncio.php';
 require_once 'utilidades/dbconn.php';
 require_once 'utilidades/conninfo.php';
+require_once 'utilidades/error.php';
 
 // Si no existe una variable de sesión sacar al usuario
 if (!isset($_SESSION['email'])) {
@@ -51,8 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ($array_fotos as $i => $foto) {
         // Comprobamos que la extensión de los archivos introducidos son válidas
         $extension = pathinfo($foto, PATHINFO_EXTENSION);
-        if ($extension != 'jpg' && $extension != 'jpeg' && $extension != 'webp' && $extension != 'png') {
-            $error = "Alguna de las fotos no tiene un formato admitido, deben de ser jpg, jpeg, png o webp";
+        if ($extension != 'jpg' && $extension != 'jpeg' && $extension != 'png') {
+            $error = "Alguna de las fotos no tiene un formato admitido, deben de ser jpg, jpeg o png";
         } else {
             // Copiamos la foto al disco
             // Calculamos un hash para el nombre del archivo
@@ -95,7 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,32 +110,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
     <header>
-        <img src="" alt="">
-        <h1>Navapop</h1>
+        <div class="title">
+            <h1>NAVAPOP</h1>
+        </div>
+        <div class="search">
+            <form method="get" action="index.php?busqueda=">
+                <input type="search" name="busqueda" placeholder="Búsqueda de anuncio..." >
+                <button>Buscar</button>
+            </form>
+        </div>
     </header>
     <main>
         <nav>
             <div class="LogInfo">
                 <div class="imgL">
-                    <img src="fotosUsuarios/<?= $_SESSION['foto'] ?>">
+                    <img src="fotosUsuarios/<?= $_SESSION['foto']?>">
                 </div>
                 <div class="emailL">
-                    <p>
-                        <?= $_SESSION['email'] ?>
-                    </p>
+                    <p><?= $_SESSION['email'] ?></p>
                 </div>
             </div>
-            <div class="nav-items">
-                <h4><a href="index.php?misanuncios">Mis anuncios</a></h4>
-            </div>
-            <div class="logoutL"><a href="logout.php">Cerrar Sesión</a></div>
-            <div class="nav-items">
-                <a href="index.php">Volver atrás</a>
-            </div>
+            <a href="index.php">
+                <div class="nav-items" style="border-top: 1px solid #89c6d7;">
+                    <h4>Anuncios</h4>
+                </div>
+            </a>
+            <a href="index.php?misanuncios">
+                <div class="nav-items">
+                    <h4>Mis anuncios</h4>
+                </div>
+            </a>
+            <a href="crearanuncio.php">
+                <div class="nav-items">
+                    <h4>Crear anuncio</h4>
+                </div>
+            </a>
+            <a href="logout.php">
+                <div class="logoutL">
+                    <p>Cerrar Sesión</p>
+                </div>
+            </a>
         </nav>
         <section>
             <div class="nuevoA">
-                <?= $error ?>
+                <?php mostrarError($error); ?>
                 <form action="crearanuncio.php" method="post" enctype="multipart/form-data" id="formcrear">
                     <label>Nombre: </label><input type="text" name="nombre" placeholder="Introduce el nombre del anuncio" required><br>
                     <label>Descripción: </label>
@@ -143,14 +161,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <p>Introduce aquí una <strong>descripción</strong> para tu anuncio</p>
                     </div>
                     <input type="hidden" id="descripcion" name="descripcion">
-                    <label>Fotos: </label><input type="file" name="fotos[]" accept="image/jpeg, image/webp, image/png" multiple required><br>
+                    <label>Fotos: </label><input type="file" name="fotos[]" accept="image/jpeg, image/png" multiple required><br>
                     <label>Precio: </label>
                     <div class="loseuros">
                         <input type="number" name="precio" placeholder="Introduce el precio para tu anuncio" required><br>
                     </div>
                     <input type="submit" value="Subir anuncio"><br>
-                    <a href="index.php">Volver atrás</a>
                 </form>
+            </div>
+            <div>
+                <a href="index.php">Volver atrás</a>
             </div>
         </section>
     </main>
