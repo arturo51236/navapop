@@ -115,7 +115,7 @@ a {
     transform: translateY(30%);
 }
 
-.search > form > button, .but-registro, .but-anuncios > button {
+.search > form > button, .but-registro, .but-anuncios > button, .but-crear, .but-editar, .e-e-A > form > button {
     height: 60%;
     width: 15%;
     border-radius: 10px;
@@ -132,15 +132,21 @@ a {
     color: #162a36;
 }
 
-.but-registro, .but-anuncios > button {
+.but-registro, .but-anuncios > button, .but-crear, .but-editar, .e-e-A > form > button {
     margin-left: 0;
     transform: translateY(-35%);
     background-image: linear-gradient(to right, #b9dee8, #59a9c2);
     color: #162a36;
 }
 
-.but-anuncios > button {
+.but-anuncios > button, .but-crear, .but-editar, .e-e-A > form > button {
     transform: translateY(0%);
+}
+
+.but-registro:hover, .e-e-A > form > button:hover, .but-crear:hover, .but-editar:hover, .but-anuncios > button:hover {
+    color: #daeef3;
+    background-image: none;
+    background-color: #162a36;
 }
 
 .login-div {
@@ -240,11 +246,11 @@ a {
     box-shadow: 6px 6px 6px 3px rgba(138, 198, 214, 0.1);
     border-radius: 25px;
     width: 60%;
-    height: 80%;
+    height: 87%;
     margin: auto;
 }
 
-.anuncio, .registro {
+.anuncio, .registro, .nuevoA, .editA {
     text-align: center;
     width: 30%;
     margin: 15px;
@@ -259,11 +265,32 @@ a {
     transform: scale(0.93);
 }
 
-.n-p-A, .n-t-p-f-U {
+.n-p-A-1, .n-p-A-2, .n-t-p-f-U {
     display: flex;
     width: 100%;
     border-radius: 25px;
     margin: 8px;
+}
+
+.n-p-A-2 {
+    width: 70%;
+    background-image: linear-gradient(to right, #b9dee8, #59a9c2);
+    color: #162a36;
+    border: 2px solid #89c6d7;
+    margin-left: 1.7%;
+}
+
+.n-p-A-2 > p, .n-p-A-2 > h4 {
+    top: 20%;
+    transform: translateY(20%);
+}
+
+.n-t-p-f-U {
+    width: 25%;
+    background-image: linear-gradient(to right, #b9dee8, #59a9c2);
+    color: #162a36;
+    border: 2px solid #89c6d7;
+    padding-left: 8px;
 }
 
 .fotoA {
@@ -279,18 +306,18 @@ a {
     object-fit: cover;
     object-position: center center;
     border-radius: 15px;
-    width: 80px;
-    height: 80px;
-    border: 2px solid black;
+    width: 70px;
+    height: 70px;
+    border: 2px solid white;
 }
 
 .nombreA {
-    width: 75%;
-
+    width: 65%;
+    padding-bottom: 10px;
 }
 
 .precioA {
-    width: 25%;
+    width: 35%;
 }
 
 .loseuros {
@@ -298,14 +325,15 @@ a {
 }
 
 .loseuros > input {
-    padding-left: 15px;
+    padding-left: 17px;
 }
 
 .loseuros:after {
     position: absolute;
-    left: 6px;
-    top: 2px;
+    left: 46px;
+    top: 15px;
     content: '€';
+    color: #162a36;
 }
 
 .foto-U {
@@ -313,6 +341,7 @@ a {
     width: 80px;
     height: 80px;
     border: 2px solid white;
+    margin: auto;
 }
 
 .registro {
@@ -323,25 +352,28 @@ a {
     transform: translateY(-10%);
 }
 
-.registro > form {
+.registro > form, #formcrear, #formeditar {
     padding: 20px;
 }
 
-.registro > form > input {
+.registro > form > input, #formcrear > input, #formeditar > input, .loseuros > input {
     width: 80%;
     height: 35px;
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-.main-registro-nuevoanuncio {
+.main-registro-nuevoanuncio, .sec-form-anun {
     flex-direction: column;
 }
 
 .fotoA-main {
-    width: 400px;
-    height: 300px;
+    width: 500px;
+    height: 400px;
     margin: auto;
+    border-radius: 20px;
+    border: 2px solid white;
+    transform: translateX(6%);
 }
 
 .fotoA-notmain {
@@ -350,4 +382,47 @@ a {
     display: block;
     margin-left: auto; 
     margin-right: 0;
+}
+
+#cambiarFoto {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+}
+
+.nuevoA, .editA {
+    display: block;
+    flex-wrap: wrap;
+    flex-direction: column;
+    height: 70%;
+    margin: auto;
+    transform: translateY(10%);
+}
+
+#formcrear, #formeditar {
+    display: block;
+    height: 100%;
+    margin: auto;
+}
+
+.vueltaA {
+    text-align: center;
+    position: relative;
+    transform: translateY(220%);
+}
+
+.e-e-A {
+    display: flex;
+}
+
+.e-e-A > form {
+    width: 50%;
+    margin: auto;
+}
+
+.e-e-A > form > button {
+    width: 70%;
+    height: 35px;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
 }

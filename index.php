@@ -56,13 +56,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         if (isset($_GET['misanuncios'])) {
             if (isset($_SESSION['id'])) {
                 $anuncios = $DAOAnuncios->selectAllById($_SESSION['id']);
+
+                if ($anuncios == null) {
+                    $error = "Tu usuario no tiene anuncios todavía";
+                    $anuncios = array();
+                }
             } else {
                 $error = "Para poder ver tus anuncios debes de iniciar sesión";
-                $anuncios = array();
-            }
-
-            if ($anuncios == null) {
-                $error = "Tu usuario no tiene anuncios todavía";
                 $anuncios = array();
             }
         }
@@ -71,18 +71,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['eliminar'])) {
         if (!empty($_GET['eliminar'])) {
             if (isset($_SESSION['email'])) {
-                $fotos = $DAOFotos->selectAllById($_GET['eliminar']);
-                if ($DAOAnuncios->deleteById($_GET['eliminar'])) {
-                    // Borrar fotos del anuncio
-                    foreach ($fotos as $foto) {
-                        $nombreFoto = $foto->getFoto();
-                        unlink("fotosAnuncios/$nombreFoto");
+                $anuncioAEliminar = $DAOAnuncios->selectById($_GET['eliminar']);
+                $idusuario = $anuncioAEliminar->getIdusuario();
+
+                if ($idusuario == $_SESSION['id']) {
+                    $fotos = $DAOFotos->selectAllById($_GET['eliminar']);
+                    if ($DAOAnuncios->deleteById($_GET['eliminar'])) {
+                        // Borrar fotos del anuncio
+                        foreach ($fotos as $foto) {
+                            $nombreFoto = $foto->getFoto();
+                            unlink("fotosAnuncios/$nombreFoto");
+                        }
+
+                        // Redirigir a la sección mis anuncios para recargar los anuncios
+                        header('location: index.php?misanuncios');
+                    } else {
+                        $error = "Error al eliminar el anuncio";
                     }
-    
-                    // Redirigir a la sección mis anuncios para recargar los anuncios
-                    header('location: index.php?misanuncios');
                 } else {
-                    $error = "Error al eliminar el anuncio";
+                    $error = "No puedes eliminar el anuncio de otro usuario";
                 }
             } else {
                 $error = "No puedes eliminar un anuncio si no inicias sesión";
@@ -207,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 <div>
                                     <img class="fotoA" src="fotosAnuncios/<?= $mainfoto ?>">
                                 </div>
-                                <div class="n-p-A">
+                                <div class="n-p-A-1">
                                     <h4 class="nombreA"><?= $anuncio->getNombre() ?></h4>
                                     <p class="precioA"><?= $anuncio->getPrecio() . '€' ?></p>
                                 </div>

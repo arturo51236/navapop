@@ -41,6 +41,7 @@ if (isset($_GET['id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $nombreanuncio ?></title>
     <link rel="stylesheet" href="./src/estilos/estilos.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
     <header>
@@ -118,42 +119,90 @@ if (isset($_GET['id'])) {
             <?php mostrarError($error); ?>
             <div class="anuncios-div">
                 <div class="anuncio-check">
-                    <div style="display: flex;">
+                    <div style="display: flex; margin-top: 2%; margin-bottom: 10px;">
                         <div class="fotoA-main">
-                            <img src="" alt="">
+                            <?php foreach ($fotos as $i => $foto): ?>
+                                <?php if ($i == 0): ?>
+                                    <img id="cambiarFoto" src="fotosAnuncios/<?= $foto->getFoto()?>">
+                                <?php endif; ?>
+                            <?php endforeach; ?>
                         </div>
                         <div class="fotoA-notmain">
-                            <?php foreach ($fotos as $foto): ?>
+                            <?php foreach ($fotos as $j => $foto): ?>
                                 <div style="fotoA-div">
-                                    <img class="fotoA-M" src="fotosAnuncios/<?= $foto->getFoto()?>">
+                                    <button class="<?= $j ?>" style="border: none; background: none;">
+                                        <img id="<?= $foto->getFoto()?>" class="fotoA-M" src="fotosAnuncios/<?= $foto->getFoto()?>">
+                                    </button>
                                 </div>
                             <?php endforeach; ?>
                         </div>
                     </div>
-                    <div class="n-p-A">
-                        <h4 class="nombreA"><?= $anuncio->getNombre() ?></h4>
-                        <p class="descA"><?= $anuncio->getDescripcion()?></p>
-                        <p class="precioA"><?= $anuncio->getPrecio() . '€' ?></p>
+                    <div style="display: flex; text-align: center;">
+                        <div class="n-p-A-2">
+                            <h4 class="nombreA"><?= $anuncio->getNombre() ?></h4>
+                            <p class="descA"><?= $anuncio->getDescripcion()?></p>
+                            <p class="precioA"><?= $anuncio->getPrecio() . '€' ?></p>
+                        </div>
+                        <div class="n-t-p-f-U">
+                            <div style="display: flex; flex-direction: column">
+                                <h4 class="nombre-U"><?= $usuario->getNombre() ?></h4>
+                                <p class="telefono-U"><?= $usuario->getTelefono() ?></p>
+                                <p class="poblacion-U"><?= $usuario->getPoblacion() ?></p>
+                            </div>
+                            <img class="foto-U" src="fotosUsuarios/<?= $usuario->getFoto() ?>">
+                        </div>
                     </div>
-                    <div class="n-t-p-f-U">
-                        <h4 class="nombre-U"><?= $usuario->getNombre() ?></h4>
-                        <p class="telefono-U"><?= $usuario->getTelefono() ?></p>
-                        <p class="poblacion-U"><?= $usuario->getPoblacion() ?></p>
-                        <img class="foto-U" src="fotosUsuarios/<?= $usuario->getFoto() ?>">
-                    </div>
-                    <div class="but-anuncios" style="text-align: center;">
+                    <div class="but-anuncios" style="text-align: center; padding-top: 15px;">
                         <button>Chat</button>
                         <button>Comprar</button>
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="vueltaA" style="transform: translateY(-70%);">
                 <a href="index.php">Volver atrás</a>
             </div>
         </section>
     </main>
     <footer>
-        <p>Copyright © Navapop 2023</p>
+        <p>Copyright &#169 Navapop 2023</p>
     </footer>
+    <script>
+        jQuery(document).ready(function($) {
+            $('.0').on({
+                'click': function(){
+                    var foto = $(this).find('img').attr('id');
+                    $('#cambiarFoto').attr('src','./fotosAnuncios/' + foto);
+                }
+            });
+            
+            $('.1').on({
+                'click': function(){
+                    var foto = $(this).find('img').attr('id');
+                    $('#cambiarFoto').attr('src','./fotosAnuncios/' + foto);
+                }
+            });
+            
+            $('.2').on({
+                'click': function(){
+                    var foto = $(this).find('img').attr('id');
+                    $('#cambiarFoto').attr('src','./fotosAnuncios/' + foto);
+                }
+            });
+            
+            $('.3').on({
+                'click': function(){
+                    var foto = $(this).find('img').attr('id');
+                    $('#cambiarFoto').attr('src','./fotosAnuncios/' + foto);
+                }
+            });
+
+            $('.4').on({
+                'click': function(){
+                    var foto = $(this).find('img').attr('id');
+                    $('#cambiarFoto').attr('src','./fotosAnuncios/' + foto);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
