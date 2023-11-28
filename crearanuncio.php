@@ -151,31 +151,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
             </a>
         </nav>
-        <section>
+        <section class="sec-form-anun">
+            <?php mostrarError($error); ?>
             <div class="nuevoA">
-                <?php mostrarError($error); ?>
+                <h3 style="padding-top: 20px;">CREAR ANUNCIO</h3>
                 <form action="crearanuncio.php" method="post" enctype="multipart/form-data" id="formcrear">
-                    <label>Nombre: </label><input type="text" name="nombre" placeholder="Introduce el nombre del anuncio" required><br>
-                    <label>Descripción: </label>
-                    <div id="desc">
-                        <p>Introduce aquí una <strong>descripción</strong> para tu anuncio</p>
+                    <label>Nombre: </label><br><input type="text" name="nombre" placeholder="Introduce el nombre del anuncio" required><br>
+                    <label style="margin-bottom: 10px;">Descripción: </label>
+                    <div style="width: 80%; margin: auto; margin-top: 10px; margin-bottom: 10px;">
+                        <div id="desc">
+                            <p>Introduce aquí una <strong>descripción</strong> para tu anuncio</p>
+                        </div>
                     </div>
                     <input type="hidden" id="descripcion" name="descripcion">
-                    <label>Fotos: </label><input type="file" name="fotos[]" accept="image/jpeg, image/png" multiple required><br>
-                    <label>Precio: </label>
+                    <label>Fotos: </label><br><input type="file" name="fotos[]" accept="image/jpeg, image/png" multiple required><br>
+                    <label>Precio: </label><br>
                     <div class="loseuros">
                         <input type="number" name="precio" placeholder="Introduce el precio para tu anuncio" required><br>
                     </div>
-                    <input type="submit" value="Subir anuncio"><br>
+                    <input class="but-crear" type="submit" value="Crear anuncio"><br>
                 </form>
             </div>
-            <div>
+            <div class="vueltaA">
                 <a href="index.php">Volver atrás</a>
             </div>
         </section>
     </main>
     <footer>
-        <p>Copyright © Navapop 2023</p>
+        <p>Copyright &#169 Navapop 2023</p>
     </footer>
     <script>
         var quill = new Quill('#desc', {
